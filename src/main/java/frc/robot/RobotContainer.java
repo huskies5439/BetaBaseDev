@@ -48,7 +48,7 @@ basePilotable.setDefaultCommand(new RunCommand(() -> basePilotable.conduire(joys
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new Tourner(-90, basePilotable);
+    return new Tourner(90, basePilotable);
   
   }
 }

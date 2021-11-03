@@ -7,21 +7,21 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.BasePilotable;
 
-public class Tourner extends CommandBase {
+ 
+public class Avancer extends CommandBase {
   boolean stop;
-  double angle;
-  //double marge;
+  double distance;
+  double marge;
+
   BasePilotable basePilotable;
 
-  /** Creates a new Tourner. */
-  public Tourner(double angle,BasePilotable basePilotable) {
+  public Avancer(double distance,BasePilotable basePilotable) {
+  
     stop = false;
+    marge = 5;
     this.basePilotable = basePilotable;
-    this.angle = angle;
-    //marge = 0.01
-    
-    addRequirements(basePilotable);
-    // Use addRequirements() here to declare subsystem dependencies.
+    this.distance = distance;
+  
   }
 
   // Called when the command is initially scheduled.
@@ -32,26 +32,31 @@ public class Tourner extends CommandBase {
   @Override
   public void execute() {
 
-    if(basePilotable.getAngle()<angle-1 /*marge*/){
-      basePilotable.autoConduire(0,0.2);
+    if (basePilotable.getPosition() > distance + marge) {
 
+      basePilotable.autoConduire(-0.5, 0);
     }
-    else if(basePilotable.getAngle()>angle+1 /*marge*/){
-      basePilotable.autoConduire(0,-0.2);
+
+    else if (basePilotable.getPosition() < distance - marge) {
+
+      basePilotable.autoConduire(0.5, 0);  
     }
-  else{
-    basePilotable.autoConduire(0, 0);
-    stop = true;//#endregion.
-  }
+
+    else {
+
+      basePilotable.stop();  
+      stop = true;}
+
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}
+
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return stop;
+    return false;
   }
 }
