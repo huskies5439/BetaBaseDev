@@ -10,7 +10,8 @@ import frc.robot.subsystems.BasePilotable;
 public class Tourner extends CommandBase {
   boolean stop;
   double angle;
-  //double marge;
+  double marge;
+  
   BasePilotable basePilotable;
 
   /** Creates a new Tourner. */
@@ -18,7 +19,7 @@ public class Tourner extends CommandBase {
     stop = false;
     this.basePilotable = basePilotable;
     this.angle = angle;
-    //marge = 0.01
+    this.marge = 0.1;
     
     addRequirements(basePilotable);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -32,17 +33,21 @@ public class Tourner extends CommandBase {
   @Override
   public void execute() {
 
-    if(basePilotable.getAngle()<angle-1 /*marge*/){
+    if(basePilotable.getAngle()<angle - marge){
       basePilotable.autoConduire(0,0.2);
 
     }
-    else if(basePilotable.getAngle()>angle+1 /*marge*/){
+
+    else if(basePilotable.getAngle()>angle + marge){
       basePilotable.autoConduire(0,-0.2);
     }
-  else{
-    basePilotable.autoConduire(0, 0);
-    stop = true;//#endregion.
-  }
+
+    else{
+    basePilotable.stop();
+    stop = true;
+    // Tourner le robot jusqu'à l'angle et avec une marge car le robot ne peux pas avoir une précision de 100%
+
+    }
 
   }
 

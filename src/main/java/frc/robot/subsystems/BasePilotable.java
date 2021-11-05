@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class BasePilotable extends SubsystemBase {
+  public class BasePilotable extends SubsystemBase {
   /** Creates a new BasePilotable. */
 
 private WPI_TalonFX moteurGauche = new WPI_TalonFX(1);
@@ -21,11 +21,14 @@ private WPI_TalonFX moteurDroit = new WPI_TalonFX(2);
 private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 private DifferentialDrive drive = new DifferentialDrive(moteurGauche, moteurDroit);
 
-
   public BasePilotable() {
+
+    // On inverse les moteurs pour avancer quand la vittesse est à 1
     moteurDroit.setInverted(true);
     moteurGauche.setInverted(true);
     setBrake(true);
+
+    // Configure les capteurs internes des moteurs
     moteurGauche.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,0,0);
     moteurDroit.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,0,0);
   }
@@ -36,7 +39,10 @@ private DifferentialDrive drive = new DifferentialDrive(moteurGauche, moteurDroi
     SmartDashboard.putNumber("Position Droite", getPositionD());
     SmartDashboard.putNumber("Position Gauche", getPositionG());
     SmartDashboard.putNumber("Position Moyenne", getPosition());
+    // Insère ces informations dans le dashboard
+
     // This method will be called once per scheduler run
+
   }
 
 public void conduire(double vx,double vz) {
@@ -46,11 +52,20 @@ public void conduire(double vx,double vz) {
 }
 
 public void autoConduire(double vx, double vz) {
+  // Fonction conduire utiliser en Autonomous 
 
   drive.arcadeDrive(vx, vz, false);
 }
 
+public void stop() {
+  // Stop les moteurs
+
+  autoConduire(0, 0);
+}
+
 public void setBrake(boolean isBrake) {
+  // Détermine si le robot brake ou non quand il n'avance pas
+
   if (isBrake) {
     moteurDroit.setNeutralMode(NeutralMode.Brake);
     moteurGauche.setNeutralMode(NeutralMode.Brake);
@@ -62,31 +77,41 @@ public void setBrake(boolean isBrake) {
 }
 
 public double getAngle() {
+  // Angle du robot par le gyro
 
   return gyro.getAngle();
 }
 
 public void resetGyro() {
+  // Gyro à 0
 
   gyro.reset();
 }
 
 public double getPositionG() {
+  // Degrès fait par le moteur gauche
 
   return moteurGauche.getSelectedSensorPosition();
 }
+
+public void resetEncoder(){
+  // Encodeur à 0
+
+  moteurDroit.setSelectedSensorPosition(0);
+  moteurGauche.setSelectedSensorPosition(0);
+}
+
 public double getPositionD() {
+  // Degrès fait par le moteur droit
 
   return moteurDroit.getSelectedSensorPosition();
 }
 
 public double getPosition() {
+  // Degrès fait par la roue droite et gauche
 
   return (getPositionG() + getPositionD() ) / 2.0;
 }
 
-public void stop() {
-}
-
-
+ 
 }

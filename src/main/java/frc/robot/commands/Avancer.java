@@ -45,9 +45,10 @@ public class Avancer extends CommandBase {
     else {
 
       basePilotable.stop();  
-      stop = true;}
-
-
+      stop = true;
+      // Avancer le robot jusqu'à ce que les roues est fait la distance en tour de roue et le respecte dans la marge 
+    }
+  
   }
 
   // Called once the command ends or is interrupted.
