@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
   public class BasePilotable extends SubsystemBase {
@@ -21,16 +22,22 @@ private WPI_TalonFX moteurDroit = new WPI_TalonFX(2);
 private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 private DifferentialDrive drive = new DifferentialDrive(moteurGauche, moteurDroit);
 
+private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*Units.inchesToMeters(4);
+
   public BasePilotable() {
 
     // On inverse les moteurs pour avancer quand la vittesse est à 1
     moteurDroit.setInverted(true);
     moteurGauche.setInverted(true);
-    setBrake(true);
+    setBrake(false);
 
     // Configure les capteurs internes des moteurs
     moteurGauche.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,0,0);
     moteurDroit.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,0,0);
+    resetEncoder();
+    resetGyro();
+    moteurGauche.configSelectedFeedbackCoefficient((14/72)*(16/72)*Math.PI*Units.inchesToMeters(4));
+    
   }
 
   @Override
@@ -91,20 +98,15 @@ public void resetGyro() {
 public double getPositionG() {
   // Degrès fait par le moteur gauche
 
-  return moteurGauche.getSelectedSensorPosition();
+  return moteurGauche.getSelectedSensorPosition()*conversionMoteur;
 }
 
-public void resetEncoder(){
-  // Encodeur à 0
 
-  moteurDroit.setSelectedSensorPosition(0);
-  moteurGauche.setSelectedSensorPosition(0);
-}
 
 public double getPositionD() {
   // Degrès fait par le moteur droit
 
-  return moteurDroit.getSelectedSensorPosition();
+  return -moteurDroit.getSelectedSensorPosition()*conversionMoteur;
 }
 
 public double getPosition() {
@@ -113,5 +115,12 @@ public double getPosition() {
   return (getPositionG() + getPositionD() ) / 2.0;
 }
 
+
+public void resetEncoder(){
+  // Encodeur à 0
+
+  moteurDroit.setSelectedSensorPosition(0);
+  moteurGauche.setSelectedSensorPosition(0);
+}
  
 }
