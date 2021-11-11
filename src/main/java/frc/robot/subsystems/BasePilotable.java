@@ -27,6 +27,7 @@ private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*U
   public BasePilotable() {
 
     // On inverse les moteurs pour avancer quand la vittesse est à 1
+    setRamp(0.25);
     moteurDroit.setInverted(true);
     moteurGauche.setInverted(true);
     setBrake(true);
@@ -38,6 +39,7 @@ private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*U
     resetGyro();
     
   }
+
 
   @Override
   public void periodic() {
@@ -63,10 +65,19 @@ public void autoConduire(double vx, double vz) {
   drive.arcadeDrive(vx, vz, false);
 }
 
+
+
 public void stop() {
   // Stop les moteurs
 
   autoConduire(0, 0);
+}
+
+
+public void setRamp(double ramp) {
+
+  moteurDroit.configOpenloopRamp(ramp);
+  moteurGauche.configOpenloopRamp(ramp);
 }
 
 public void setBrake(boolean isBrake) {
