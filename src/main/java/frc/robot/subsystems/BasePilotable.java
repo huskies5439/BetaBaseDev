@@ -29,14 +29,13 @@ private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*U
     // On inverse les moteurs pour avancer quand la vittesse est à 1
     moteurDroit.setInverted(true);
     moteurGauche.setInverted(true);
-    setBrake(false);
+    setBrake(true);
 
     // Configure les capteurs internes des moteurs
     moteurGauche.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,0,0);
     moteurDroit.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,0,0);
     resetEncoder();
     resetGyro();
-    moteurGauche.configSelectedFeedbackCoefficient((14/72)*(16/72)*Math.PI*Units.inchesToMeters(4));
     
   }
 

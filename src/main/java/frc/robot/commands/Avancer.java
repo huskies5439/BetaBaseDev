@@ -18,15 +18,19 @@ public class Avancer extends CommandBase {
   public Avancer(double distance,BasePilotable basePilotable) {
   
     stop = false;
-    marge = 5;
+    marge = 0.01;
     this.basePilotable = basePilotable;
     this.distance = distance;
+
+    addRequirements(basePilotable);
   
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    basePilotable.resetEncoder();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -34,12 +38,12 @@ public class Avancer extends CommandBase {
 
     if (basePilotable.getPosition() > distance + marge) {
 
-      basePilotable.autoConduire(-0.5, 0);
+      basePilotable.autoConduire(-1, 0);
     }
 
     else if (basePilotable.getPosition() < distance - marge) {
 
-      basePilotable.autoConduire(0.5, 0);  
+      basePilotable.autoConduire(1, 0);  
     }
 
     else {
@@ -53,11 +57,13 @@ public class Avancer extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return stop;
+    
   }
 }
