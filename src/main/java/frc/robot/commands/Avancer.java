@@ -12,6 +12,8 @@ public class Avancer extends CommandBase {
   boolean stop;
   double distance;
   double marge;
+  double ajustementRotation;
+  double angleDirection;
 
   BasePilotable basePilotable;
 
@@ -30,20 +32,23 @@ public class Avancer extends CommandBase {
   @Override
   public void initialize() {
     basePilotable.resetEncoder();
+    angleDirection = basePilotable.getAngle();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
+    ajustementRotation = (angleDirection-basePilotable.getAngle()) * 0.1 /* à calibrer */; 
+
     if (basePilotable.getPosition() > distance + marge) {
 
-      basePilotable.autoConduire(-1, 0);
+      basePilotable.autoConduire(-0.7, ajustementRotation);
     }
 
     else if (basePilotable.getPosition() < distance - marge) {
 
-      basePilotable.autoConduire(1, 0);  
+      basePilotable.autoConduire(0.7, ajustementRotation);  
     }
 
     else {

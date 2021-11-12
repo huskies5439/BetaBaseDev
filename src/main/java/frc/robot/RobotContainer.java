@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import frc.robot.commands.Avancer;
 import frc.robot.commands.TrajetAuto;
 import frc.robot.subsystems.BasePilotable;
 
