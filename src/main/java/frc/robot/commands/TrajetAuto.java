@@ -17,9 +17,9 @@ public class TrajetAuto extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
 
-    new Avancer(2.0, basePilotable),
+    new Avancer(3.0, basePilotable),
 
-    new Tourner (90, basePilotable),
+    new Tourner (-90, basePilotable),
 
 
     new Avancer(0.5, basePilotable)

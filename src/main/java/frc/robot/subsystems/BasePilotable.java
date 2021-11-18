@@ -27,7 +27,7 @@ private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*U
   public BasePilotable() {
 
     // On inverse les moteurs pour avancer quand la vittesse est à 1
-    setRamp(0.25);
+    setRamp(0.1);
     moteurDroit.setInverted(true);
     moteurGauche.setInverted(true);
     setBrake(true);
@@ -68,7 +68,7 @@ public void autoConduire(double vx, double vz) {
 
 
 public void stop() {
-  // Stop les moteurs
+  // Stop les moteurs.
 
   autoConduire(0, 0);
 }
@@ -81,7 +81,7 @@ public void setRamp(double ramp) {
 }
 
 public void setBrake(boolean isBrake) {
-  // Détermine si le robot brake ou non quand il n'avance pas
+  // Détermine si le robot brake ou non quand il n'avance pas.
 
   if (isBrake) {
     moteurDroit.setNeutralMode(NeutralMode.Brake);
@@ -106,7 +106,7 @@ public void resetGyro() {
 }
 
 public double getPositionG() {
-  // Degrès fait par le moteur gauche
+  // Degrés fait par le moteur gauche
 
   return moteurGauche.getSelectedSensorPosition()*conversionMoteur;
 }
@@ -114,13 +114,13 @@ public double getPositionG() {
 
 
 public double getPositionD() {
-  // Degrès fait par le moteur droit
+  // Degrés fait par le moteur droit
 
   return -moteurDroit.getSelectedSensorPosition()*conversionMoteur;
 }
 
 public double getPosition() {
-  // Degrès fait par la roue droite et gauche
+  // Degrés fait par la roue droite et gauche
 
   return (getPositionG() + getPositionD() ) / 2.0;
 }

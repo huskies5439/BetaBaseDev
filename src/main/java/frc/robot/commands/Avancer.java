@@ -43,12 +43,12 @@ public class Avancer extends CommandBase {
 
     if (basePilotable.getPosition() > distance + marge) {
 
-      basePilotable.autoConduire(-0.7, ajustementRotation);
+      basePilotable.autoConduire(-0.4, ajustementRotation);
     }
 
     else if (basePilotable.getPosition() < distance - marge) {
 
-      basePilotable.autoConduire(0.7, ajustementRotation);  
+      basePilotable.autoConduire(0.4, ajustementRotation);  
     }
 
     else {
