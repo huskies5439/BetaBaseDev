@@ -11,18 +11,20 @@ import frc.robot.subsystems.BasePilotable;
 public class Avancer extends CommandBase {
   boolean stop;
   double distance;
+  double vitesse;
   double marge;
   double ajustementRotation;
   double angleDirection;
 
   BasePilotable basePilotable;
 
-  public Avancer(double distance,BasePilotable basePilotable) {
+  public Avancer(double distance, double vitesse, BasePilotable basePilotable) {
   
     stop = false;
     marge = 0.01;
     this.basePilotable = basePilotable;
     this.distance = distance;
+    this.vitesse = vitesse;
 
     addRequirements(basePilotable);
   
@@ -39,16 +41,17 @@ public class Avancer extends CommandBase {
   @Override
   public void execute() {
 
-    ajustementRotation = (angleDirection-basePilotable.getAngle()) * 0.1 /* à calibrer */; 
+    ajustementRotation = (angleDirection-basePilotable.getAngle()) * 0.05
+     /* à calibrer */; 
 
     if (basePilotable.getPosition() > distance + marge) {
 
-      basePilotable.autoConduire(-0.4, ajustementRotation);
+      basePilotable.autoConduire(-vitesse, ajustementRotation);
     }
 
     else if (basePilotable.getPosition() < distance - marge) {
 
-      basePilotable.autoConduire(0.4, ajustementRotation);  
+      basePilotable.autoConduire(vitesse, ajustementRotation);  
     }
 
     else {

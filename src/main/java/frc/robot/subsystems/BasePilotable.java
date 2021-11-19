@@ -44,9 +44,11 @@ private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*U
   @Override
   public void periodic() {
 
-    SmartDashboard.putNumber("Position Droite", getPositionD());
-    SmartDashboard.putNumber("Position Gauche", getPositionG());
+    //SmartDashboard.putNumber("Position Droite", getPositionD());
+    //SmartDashboard.putNumber("Position Gauche", getPositionG());
     SmartDashboard.putNumber("Position Moyenne", getPosition());
+    SmartDashboard.putNumber("Angle", getAngle());
+
     // Insère ces informations dans le dashboard
 
     // This method will be called once per scheduler run

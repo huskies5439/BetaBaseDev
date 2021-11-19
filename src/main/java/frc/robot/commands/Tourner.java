@@ -19,7 +19,7 @@ public class Tourner extends CommandBase {
     stop = false;
     this.basePilotable = basePilotable;
     this.angle = angle;
-    this.marge = 0.1;
+    this.marge = 1;
     
     addRequirements(basePilotable);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -34,12 +34,12 @@ public class Tourner extends CommandBase {
   public void execute() {
 
     if(basePilotable.getAngle()<angle - marge){
-      basePilotable.autoConduire(0,0.5);
+      basePilotable.autoConduire(0,0.25);
 
     }
 
     else if(basePilotable.getAngle()>angle + marge){
-      basePilotable.autoConduire(0,-0.5);
+      basePilotable.autoConduire(0,-0.25);
     }
 
     else{
