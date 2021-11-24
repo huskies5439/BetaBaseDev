@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import frc.robot.commands.TrajetAutoJaunePyramide;
-import frc.robot.commands.TrajetAutoJauneSafe;
+import frc.robot.commands.TrajetAutoPyramide;
+import frc.robot.commands.TrajetAutoSafe;
 import frc.robot.subsystems.BasePilotable;
 
 /**
@@ -49,7 +49,7 @@ basePilotable.setDefaultCommand(new RunCommand(() -> basePilotable.conduire(joys
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new TrajetAutoJauneSafe(basePilotable); //TrajetAutoJauneSafe
+    return new TrajetAutoSafe(1, basePilotable); //TrajetAutoJauneSafe
   
   }
 }

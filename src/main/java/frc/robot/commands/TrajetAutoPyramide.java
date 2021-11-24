@@ -11,9 +11,11 @@ import frc.robot.subsystems.BasePilotable;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class TrajetAutoJaunePyramide extends SequentialCommandGroup {
+public class TrajetAutoPyramide extends SequentialCommandGroup {
+  int side;
+
   /** Creates a new TrajetAutoJaunePyramide. */
-  public TrajetAutoJaunePyramide(BasePilotable basePilotable) {
+  public TrajetAutoPyramide(int side, BasePilotable basePilotable) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
@@ -23,11 +25,11 @@ public class TrajetAutoJaunePyramide extends SequentialCommandGroup {
 
     new WaitCommand(0.5), // Remplacer par attraper le tube
 
-    new Tourner (-100, basePilotable),
+    new Tourner (-100*side, basePilotable),
 
     new Avancer(2.25, 0.4, basePilotable),
 
-    new Tourner(-45, basePilotable),
+    new Tourner(-45*side, basePilotable),
 
     new Avancer( 0.95, 0.4, basePilotable)
 

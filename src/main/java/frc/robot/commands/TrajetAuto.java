@@ -10,18 +10,18 @@ import frc.robot.subsystems.BasePilotable;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Trajetautonome extends SequentialCommandGroup {
+public class TrajetAuto extends SequentialCommandGroup {
   /** Creates a new Trajetautonome. */
-  public Trajetautonome(BasePilotable basePilotable) {
+  public TrajetAuto(int jaune, BasePilotable basePilotable) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       
-    new Avancer (2.0, basePilotable),
+      new Avancer (2.0, 0.4, basePilotable),
 
-        new Tourner(90, basePilotable),
+      new Tourner(90, basePilotable),
 
-        new Avancer(3.0, basePilotable)
+      new Avancer(3.0, 0.4, basePilotable)
     
     );
 

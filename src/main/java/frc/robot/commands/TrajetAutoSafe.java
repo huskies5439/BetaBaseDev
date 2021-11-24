@@ -6,14 +6,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.subsystems.BasePilotable;
+import frc.robot.subsystems.BasePilotable; 
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class TrajetAutoJauneSafe extends SequentialCommandGroup {
+public class TrajetAutoSafe extends SequentialCommandGroup {
+   int side;
+   
   /** Creates a new TrajetAutonome. */
-  public TrajetAutoJauneSafe(BasePilotable basePilotable) {
+  public TrajetAutoSafe(int side, BasePilotable basePilotable) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
@@ -23,7 +25,7 @@ public class TrajetAutoJauneSafe extends SequentialCommandGroup {
 
     new WaitCommand(0.5), // Remplacer par attraper le tube
 
-    new Tourner (-105, basePilotable),
+    new Tourner (-105*side, basePilotable),
 
     new Avancer(2.9, 0.4, basePilotable),
 
@@ -31,7 +33,7 @@ public class TrajetAutoJauneSafe extends SequentialCommandGroup {
 
     new Avancer(-2.9, 0.4, basePilotable), //Monter le bras en préparation d'attraper
 
-    new Tourner(10, basePilotable),
+    new Tourner(10*side, basePilotable),
 
     new WaitCommand(0.5), //Remplacer par attraper
 
