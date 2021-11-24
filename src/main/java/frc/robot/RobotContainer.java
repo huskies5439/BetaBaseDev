@@ -5,10 +5,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import frc.robot.commands.TrajetAutoPyramide;
 import frc.robot.commands.TrajetAutoSafe;
 import frc.robot.subsystems.BasePilotable;
 
@@ -24,14 +25,29 @@ public class RobotContainer {
 
  XboxController joystick = new XboxController(0);
 
+ private final Command safeJaune = new TrajetAutoSafe(1, basePilotable);
+ private final Command safeVert = new TrajetAutoSafe(-1, basePilotable);
+ private final Command pyramideJaune = new TrajetAutoSafe(1, basePilotable);
+ private final Command pyramideVert = new TrajetAutoSafe(-1, basePilotable);
+ private final SendableChooser <Command> chooser = new SendableChooser<>();
+ 
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
 
+    chooser.addOption("TrajetAutoSafeJaune", safeJaune);
+    chooser.addOption("TrajetAutoSafeVert", safeVert);
+    /*chooser.addOption("TrajetAutoPyramideJaune", pyramideJaune);
+    chooser.addOption("TrajetAutoPyramideVert", pyramideVert);
+  */
+    SmartDashboard.putData(chooser);
+
 basePilotable.setDefaultCommand(new RunCommand(() -> basePilotable.conduire(joystick.getY(Hand.kLeft), joystick.getX(Hand.kRight)), basePilotable));
 
+    
   }
 
   /**
@@ -48,8 +64,9 @@ basePilotable.setDefaultCommand(new RunCommand(() -> basePilotable.conduire(joys
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+
     // An ExampleCommand will run in autonomous
-    return new TrajetAutoSafe(1, basePilotable); //TrajetAutoJauneSafe
+    return chooser.getSelected(); //TrajetAuto
   
   }
 }
