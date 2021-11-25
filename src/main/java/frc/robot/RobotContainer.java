@@ -40,9 +40,9 @@ public class RobotContainer {
 
     chooser.addOption("TrajetAutoSafeJaune", safeJaune);
     chooser.addOption("TrajetAutoSafeVert", safeVert);
-    /*chooser.addOption("TrajetAutoPyramideJaune", pyramideJaune);
+    chooser.addOption("TrajetAutoPyramideJaune", pyramideJaune);
     chooser.addOption("TrajetAutoPyramideVert", pyramideVert);
-  */
+  
     SmartDashboard.putData(chooser);
 
 basePilotable.setDefaultCommand(new RunCommand(() -> basePilotable.conduire(joystick.getY(Hand.kLeft), joystick.getX(Hand.kRight)), basePilotable));

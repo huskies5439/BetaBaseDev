@@ -24,7 +24,7 @@ public class Avancer extends CommandBase {
     marge = 0.01;
     this.basePilotable = basePilotable;
     this.distance = distance;
-    this.vitesse = vitesse;
+    this.vitesse = Math.abs(vitesse);
 
     addRequirements(basePilotable);
   
@@ -44,6 +44,11 @@ public class Avancer extends CommandBase {
     ajustementRotation = (angleDirection-basePilotable.getAngle()) * 0.05
      /* à calibrer */; 
 
+    if (vitesse > 0.4 && Math.abs(distance - basePilotable.getPosition()) <= 0.3) {
+
+      vitesse = vitesse/2.0;
+
+    }
 
     if (basePilotable.getPosition() > distance + marge) {
 

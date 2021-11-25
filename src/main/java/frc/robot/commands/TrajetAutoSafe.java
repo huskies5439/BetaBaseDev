@@ -13,7 +13,7 @@ import frc.robot.subsystems.BasePilotable;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TrajetAutoSafe extends SequentialCommandGroup {
    int side;
-   
+
   /** Creates a new TrajetAutonome. */
   public TrajetAutoSafe(int side, BasePilotable basePilotable) {
     // Add your commands in the addCommands() call, e.g.
@@ -21,23 +21,23 @@ public class TrajetAutoSafe extends SequentialCommandGroup {
     addCommands(
 
     //Brake on ramp = 0.1
-    new Avancer(0.25, 0.4, basePilotable), // Monter le bras 
+    new Avancer(0.25, 0.6, basePilotable), // Monter le bras 
 
     new WaitCommand(0.5), // Remplacer par attraper le tube
 
     new Tourner (-105*side, basePilotable),
 
-    new Avancer(2.9, 0.4, basePilotable),
+    new Avancer(2.9, 0.6, basePilotable),
 
     new WaitCommand(0.2), // Remplacer par lacher le tube
 
-    new Avancer(-2.9, 0.4, basePilotable), //Monter le bras en préparation d'attraper
+    new Avancer(-2.9, 0.6, basePilotable), //Monter le bras en préparation d'attraper
 
     new Tourner(10*side, basePilotable),
 
     new WaitCommand(0.5), //Remplacer par attraper
 
-    new Avancer(-0.3, 0.4, basePilotable)//pour ne pas dropper le tube sur le support
+    new Avancer(-0.3, 0.6, basePilotable)//pour ne pas dropper le tube sur le support
 
     //lacher le tube
 
