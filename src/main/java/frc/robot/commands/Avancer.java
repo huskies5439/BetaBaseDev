@@ -41,7 +41,7 @@ public class Avancer extends CommandBase {
   @Override
   public void execute() {
 
-    ajustementRotation = (angleDirection-basePilotable.getAngle()) * 0.05
+    ajustementRotation = (angleDirection-basePilotable.getAngle()) * 0.025
      /* à calibrer */; 
 
     if (vitesse > 0.4 && Math.abs(distance - basePilotable.getPosition()) <= 0.3) {

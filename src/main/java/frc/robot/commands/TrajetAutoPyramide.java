@@ -21,18 +21,29 @@ public class TrajetAutoPyramide extends SequentialCommandGroup {
     addCommands(
 
     //Brake on ramp = 0.1
-    new Avancer(0.25, 0.2, basePilotable), // Monter le bras 
+    new Avancer(0.25, 0.6, basePilotable), // Monter le bras 
 
     new WaitCommand(0.5), // Remplacer par attraper le tube
 
     new Tourner (-100*side, basePilotable),
 
-    new Avancer(2.25, 0.4, basePilotable),
+    new Avancer(2.25, 0.8, basePilotable),
 
     new Tourner(-45*side, basePilotable),
 
-    new Avancer( 0.95, 0.4, basePilotable)
+    new Avancer(0.95, 0.6, basePilotable),
 
+    //mettre paralel haueur longueuer
+
+    new WaitCommand(0.5), // Dropper Le Tube
+
+    new Avancer(-1.25, 0.8, basePilotable),
+
+    new Tourner(55.5*side, basePilotable),
+
+    new Avancer(1.80, 0.8, basePilotable)
+
+    //new Avancer( 0, 0.6, basePilotable)
     // Coder le retour pour chercher l'autre cylindre
 
     );

@@ -27,11 +27,11 @@ public class TrajetAutoSafe extends SequentialCommandGroup {
 
     new Tourner (-105*side, basePilotable),
 
-    new Avancer(2.9, 1, basePilotable),
+    new Avancer(2.9, 0.8, basePilotable),
 
     new WaitCommand(0.2), // Remplacer par lacher le tube
 
-    new Avancer(-2.9, 1, basePilotable), //Monter le bras en préparation d'attraper
+    new Avancer(-2.9, 0.8, basePilotable), //Monter le bras en préparation d'attraper
 
     new Tourner(10*side, basePilotable),
 
