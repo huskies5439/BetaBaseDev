@@ -34,12 +34,12 @@ public class Tourner extends CommandBase {
   public void execute() {
 
     if(basePilotable.getAngle()<angle - marge){
-      basePilotable.autoConduire(0,0.25);
+      basePilotable.autoConduire(0,0.35);
 
     }
 
     else if(basePilotable.getAngle()>angle + marge){
-      basePilotable.autoConduire(0,-0.25);
+      basePilotable.autoConduire(0,-0.35);
     }
 
     else{
