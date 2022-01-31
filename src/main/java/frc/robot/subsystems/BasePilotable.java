@@ -22,11 +22,14 @@ private WPI_TalonFX moteurDroit = new WPI_TalonFX(2);
 private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 private DifferentialDrive drive = new DifferentialDrive(moteurGauche, moteurDroit);
 
+private double conversionEncodeur;
+
 private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*Units.inchesToMeters(4);
 
   public BasePilotable() {
 
     // On inverse les moteurs pour avancer quand la vittesse est à 1
+    conversionEncodeur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*Units.inchesToMeters(4); 
     setRamp(0.1);
     moteurDroit.setInverted(true);
     moteurGauche.setInverted(true);
@@ -48,6 +51,9 @@ private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*U
     //SmartDashboard.putNumber("Position Gauche", getPositionG());
     SmartDashboard.putNumber("Position Moyenne", getPosition());
     SmartDashboard.putNumber("Angle", getAngle());
+    SmartDashboard.putNumber("Vitesse", getVitesse());
+    SmartDashboard.putNumber("Vitesse Droite", getVitesseD());
+    SmartDashboard.putNumber("Vitesse Gauche", getVitesseG());
 
     // Insère ces informations dans le dashboard
 
@@ -125,6 +131,21 @@ public double getPosition() {
   // Degrés fait par la roue droite et gauche
 
   return (getPositionG() + getPositionD() ) / 2.0;
+}
+
+public double getVitesseD() {
+
+  return -moteurDroit.getSelectedSensorVelocity()*conversionEncodeur*10;//x10 car les encodeurs des Falcon donne des clics par 100 ms.
+}
+
+public double getVitesseG() {
+
+  return moteurGauche.getSelectedSensorVelocity()*conversionEncodeur*10;
+}
+
+public double getVitesse() {
+
+  return (getVitesseD() + getVitesseG()) / 2;
 }
 
 
