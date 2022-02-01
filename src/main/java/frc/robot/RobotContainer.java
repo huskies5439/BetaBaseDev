@@ -10,8 +10,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import frc.robot.commands.TrajetAutoPyramide;
-import frc.robot.commands.TrajetAutoSafe;
 import frc.robot.subsystems.BasePilotable;
 
 /**
@@ -26,10 +24,6 @@ public class RobotContainer {
 
  XboxController joystick = new XboxController(0);
 
- private final Command safeJaune = new TrajetAutoSafe(1, basePilotable);
- private final Command safeVert = new TrajetAutoSafe(-1, basePilotable);
- private final Command pyramideJaune = new TrajetAutoPyramide(1, basePilotable);
- private final Command pyramideVert = new TrajetAutoPyramide(-1, basePilotable);
  private final SendableChooser <Command> chooser = new SendableChooser<>();
  
 
@@ -39,10 +33,6 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    chooser.addOption("TrajetAutoSafeJaune", safeJaune);
-    chooser.addOption("TrajetAutoSafeVert", safeVert);
-    chooser.addOption("TrajetAutoPyramideJaune", pyramideJaune);
-    chooser.addOption("TrajetAutoPyramideVert", pyramideVert);
   
     SmartDashboard.putData(chooser);
 

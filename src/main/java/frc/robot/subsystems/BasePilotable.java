@@ -13,16 +13,19 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 
   public class BasePilotable extends SubsystemBase {
   /** Creates a new BasePilotable. */
 
-private WPI_TalonFX moteurGauche = new WPI_TalonFX(1);
-private WPI_TalonFX moteurDroit = new WPI_TalonFX(2);
-private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
-private DifferentialDrive drive = new DifferentialDrive(moteurGauche, moteurDroit);
-
-private double conversionEncodeur;
+    private WPI_TalonFX moteurGauche = new WPI_TalonFX(3);
+    private WPI_TalonFX moteurDroit = new WPI_TalonFX(4);
+    private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+    private DifferentialDrive drive = new DifferentialDrive(moteurGauche, moteurDroit);
+    private double conversionEncodeur;
+    private DifferentialDriveOdometry odometry;
 
 private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*Units.inchesToMeters(4);
 
@@ -41,12 +44,13 @@ private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*U
     resetEncoder();
     resetGyro();
     
+
   }
 
 
   @Override
   public void periodic() {
-
+    odometry.update(Rotation2d.fromDegrees(getAngle()), getPositionG(), getPositionD());
     //SmartDashboard.putNumber("Position Droite", getPositionD());
     //SmartDashboard.putNumber("Position Gauche", getPositionG());
     SmartDashboard.putNumber("Position Moyenne", getPosition());
@@ -67,10 +71,12 @@ public void conduire(double vx,double vz) {
   drive.arcadeDrive(-vx, 0.7 * vz);
 }
 
-public void autoConduire(double vx, double vz) {
+public void autoConduire(double voltGauche, double voltDroit) {
   // Fonction conduire utiliser en Autonomous 
 
-  drive.arcadeDrive(vx, vz, false);
+  moteurDroit.setVoltage(voltDroit);
+  moteurGauche.setVoltage(voltGauche);
+  drive.feed();
 }
 
 
@@ -156,4 +162,24 @@ public void resetEncoder(){
   moteurGauche.setSelectedSensorPosition(0);
 }
  
+public double[] getOdometry(){
+  double[] position = new double[3];
+  double x = getPose().getTranslation().getX();
+  double y = getPose().getTranslation().getY();
+  double theta = getPose().getRotation().getDegrees();
+  position[0] = x;
+  position[1] = y;
+  position[2] = theta;
+  return position;
+}
+
+private Pose2d getPose() {
+  return odometry.getPoseMeters();
+}
+
+public void resetOdometry(Pose2d pose){
+  resetEncoder();
+  resetGyro();
+  odometry.resetPosition(pose, Rotation2d.fromDegrees(getAngle()));
+}
 }
