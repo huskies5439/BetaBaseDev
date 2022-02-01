@@ -33,7 +33,7 @@ private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*U
 
     // On inverse les moteurs pour avancer quand la vittesse est à 1
     conversionEncodeur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*Units.inchesToMeters(4); 
-    setRamp(0.1);
+    setRamp(0);
     moteurDroit.setInverted(true);
     moteurGauche.setInverted(true);
     setBrake(true);
@@ -68,7 +68,7 @@ private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*U
 public void conduire(double vx,double vz) {
   // Le vx en négatif car joystick en mode avion pis le vz capped a 70% de vitesse :D -Steven
 
-  drive.arcadeDrive(-vx, 0.7 * vz);
+  drive.arcadeDrive(-0.7*vx, 0.5 * vz);
 }
 
 public void autoConduire(double voltGauche, double voltDroit) {
