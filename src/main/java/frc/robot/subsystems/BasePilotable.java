@@ -4,15 +4,27 @@
 
 package frc.robot.subsystems;
 
+import java.io.IOException;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.util.Units;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
   public class BasePilotable extends SubsystemBase {
   /** Creates a new BasePilotable. */
@@ -30,7 +42,7 @@ private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*U
 
     // On inverse les moteurs pour avancer quand la vittesse est à 1
     conversionEncodeur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*Units.inchesToMeters(4); 
-    setRamp(0.1);
+    setRamp(0);
     moteurDroit.setInverted(true);
     moteurGauche.setInverted(true);
     setBrake(true);
@@ -51,6 +63,7 @@ private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*U
     //SmartDashboard.putNumber("Position Gauche", getPositionG());
     SmartDashboard.putNumber("Position Moyenne", getPosition());
     SmartDashboard.putNumber("Angle", getAngle());
+    SmartDashboard.putNumber("Vitesse Angle", getAngleSpeed());
     SmartDashboard.putNumber("Vitesse", getVitesse());
     SmartDashboard.putNumber("Vitesse Droite", getVitesseD());
     SmartDashboard.putNumber("Vitesse Gauche", getVitesseG());
@@ -107,6 +120,10 @@ public double getAngle() {
   return gyro.getAngle();
 }
 
+public double getAngleSpeed() {
+  return gyro.getRate();
+} 
+
 public void resetGyro() {
   // Gyro à 0
 
@@ -155,5 +172,34 @@ public void resetEncoder(){
   moteurDroit.setSelectedSensorPosition(0);
   moteurGauche.setSelectedSensorPosition(0);
 }
+
+public Trajectory creerTrajectoire(String trajet){
+  String trajetJSON = "output/"+trajet+".wpilib.json";
+  try{
+    var path = Filesystem.getDeployDirectory().toPath().resolve(trajetJSON);
+    return TrajectoryUtil.fromPathweaverJson(path);
+  }
+  catch(IOException e){
+    DriverStation.reportError("Unable to open trajectory : " + trajetJSON, e.getStackTrace());
+    return null;
+  }
+}
+
+public Command ramseteSimple(Trajectory trajectoire){
+  //                                                                          //?? Maybe ajouter intialisation de la pose
+  RamseteCommand ramseteCommand = new RamseteCommand(                         //On crée notre Ramsete Command
+    trajectoire,                                                              //On passe notre trajectoire a la RamseteCommand afin qu'il sache quoi faire
+    this::getPose,                                                            //On passe notre pose, afin qu'il connaisse son emplacement
+    new RamseteController(2, 0.7),                                            //Ce sont des arguments réputés comme idéale pour des robots de FRC dans un Ramsete Controller
+    new SimpleMotorFeedforward(Constants.kSRamsete, Constants.kVRamsete, 0),  //On donnes nos arguments de FeedForward
+    Constants.kinematics,                                                     //Notre kinematics (Afin que le robot conaisse ses mesures)
+    this::getWheelSpeeds,                                                     //Donne nos vitesses de roues
+    new PIDController(Constants.kPRamsete, 0, 0),                             //On donne un PID Controller a chacune des roues (SpeedController Group)
+    new PIDController(Constants.kPRamsete, 0, 0),                             //"                                                                     "
+    this::autoConduire,                                                       //On lui donne une commande pour conduire
+    this);                                                                    //Tous les "this" sont la pour spécifier qu'on parle de la BasePilotable
+    return ramseteCommand.andThen(()->stop());                                //On demande au robot de s'arrêter à la fin de la trajectoire
+}
+
  
 }
