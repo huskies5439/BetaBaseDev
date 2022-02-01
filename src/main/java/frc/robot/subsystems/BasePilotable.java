@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -29,6 +30,8 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
   public class BasePilotable extends SubsystemBase {
   /** Creates a new BasePilotable. */
@@ -39,6 +42,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
     private DifferentialDrive drive = new DifferentialDrive(moteurGauche, moteurDroit);
     private double conversionEncodeur;
     private DifferentialDriveOdometry odometry;
+
 
 private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*Units.inchesToMeters(4);
 
@@ -204,7 +208,6 @@ public void resetOdometry(Pose2d pose){
   public DifferentialDriveWheelSpeeds getWheelSpeeds(){
     return new DifferentialDriveWheelSpeeds(getVitesseG(), getVitesseD());
   }
-
 
   //Trajectory
   public Trajectory creerTrajectoire(String trajet){
