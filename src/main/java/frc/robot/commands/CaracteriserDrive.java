@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -21,7 +17,9 @@ public class CaracteriserDrive extends CommandBase {
     private NetworkTableEntry voltage = calibration.add("voltage",0).getEntry();
   }
   @Override
-  public void initialize() {}
+  public void initialize() {
+    basePilotable.autoconduire(,);
+  }
 
   @Override
   public void execute() {}
