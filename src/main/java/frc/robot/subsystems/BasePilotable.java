@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import java.io.IOException;
+import java.lang.invoke.VolatileCallSite;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
@@ -18,20 +19,20 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
-import edu.wpi.first.wpilibj.util.Units;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.util.Units;
 
   public class BasePilotable extends SubsystemBase {
   /** Creates a new BasePilotable. */
@@ -42,6 +43,9 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
     private DifferentialDrive drive = new DifferentialDrive(moteurGauche, moteurDroit);
     private double conversionEncodeur;
     private DifferentialDriveOdometry odometry;
+    private ShuffleboardTab calibration = Shuffleboard.getTab("calibration");
+    private NetworkTableEntry voltage = calibration.add("voltage",0).getEntry();;
+  
 
 
 private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*Units.inchesToMeters(4);
@@ -53,7 +57,7 @@ private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*U
     setRamp(0);
     moteurDroit.setInverted(true);
     moteurGauche.setInverted(true);
-    setBrake(true);
+    setBrake(false);
 
     // Configure les capteurs internes des moteurs
     moteurGauche.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,0,0);
@@ -61,7 +65,7 @@ private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*U
     resetEncoder();
     resetGyro();
     
-
+      odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getAngle()));
   }
 
 
@@ -91,14 +95,16 @@ public void conduire(double vx,double vz) {
 
 public void autoConduire(double voltGauche, double voltDroit) {
   // Fonction conduire utiliser en Autonomous 
-
-  moteurDroit.setVoltage(voltDroit);
   moteurGauche.setVoltage(voltGauche);
+  moteurDroit.setVoltage(-voltDroit);
   drive.feed();
 }
 
 
-
+public double getVitesseShuffleBoard()
+{
+   return voltage.getDouble(0.0); 
+}
 public void stop() {
   // Stop les moteurs.
 

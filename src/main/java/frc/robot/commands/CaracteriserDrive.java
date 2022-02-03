@@ -8,13 +8,10 @@ import frc.robot.subsystems.BasePilotable;
 
 public class CaracteriserDrive extends CommandBase {
   BasePilotable basePilotable;
-  private ShuffleboardTab calibration = Shuffleboard.getTab("calibration");
-  private NetworkTableEntry voltage = calibration.add("voltage",0).getEntry();
 
   public CaracteriserDrive(BasePilotable basePilotable) {
     this.basePilotable = basePilotable;
     addRequirements(basePilotable);
-
 
   }
   @Override
@@ -22,7 +19,7 @@ public class CaracteriserDrive extends CommandBase {
 
   @Override
   public void execute() {
-    basePilotable.autoConduire(voltage.getDouble(0),voltage.getDouble(0));
+    basePilotable.autoConduire(basePilotable.getVitesseShuffleBoard(),basePilotable.getVitesseShuffleBoard());
   }
 
   @Override
