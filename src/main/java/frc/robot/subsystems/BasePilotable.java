@@ -72,14 +72,15 @@ private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*U
   @Override
   public void periodic() {
     odometry.update(Rotation2d.fromDegrees(getAngle()), getPositionG(), getPositionD());
-    //SmartDashboard.putNumber("Position Droite", getPositionD());
-    //SmartDashboard.putNumber("Position Gauche", getPositionG());
+    SmartDashboard.putNumber("Position Droite", getPositionD());
+    SmartDashboard.putNumber("Position Gauche", getPositionG());
     SmartDashboard.putNumber("Position Moyenne", getPosition());
     SmartDashboard.putNumber("Angle", getAngle());
     SmartDashboard.putNumber("Angle Speed", getAngleSpeed());
     SmartDashboard.putNumber("Vitesse", getVitesse());
     SmartDashboard.putNumber("Vitesse Droite", getVitesseD());
     SmartDashboard.putNumber("Vitesse Gauche", getVitesseG());
+    SmartDashboard.putNumberArray("Pose", getOdometry());
 
     // Insère ces informations dans le dashboard
 
@@ -226,6 +227,7 @@ public void resetOdometry(Pose2d pose){
       DriverStation.reportError("Unable to open trajectory : " + trajetJSON, e.getStackTrace());
       return null;
     }
+    
   }
   public Command ramseteSimple(Trajectory trajectoire){
     //                                                                          //?? Maybe ajouter intialisation de la pose
