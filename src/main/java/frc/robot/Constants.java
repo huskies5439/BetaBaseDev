@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import org.graalvm.compiler.virtual.phases.ea.PartialEscapeBlockState.Final;
+
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import jdk.javadoc.internal.doclets.formats.html.resources.standard;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -20,6 +23,8 @@ public final class Constants {
     public static final double kSRamsete = 0.6;
     public static final double kVRamsete = 4.48;
     public static final double kPRamsete = 0;
+    public static final double kBRamsete = 2;
+    public static final double kZRamsete = 0.7;
     public static final double maxVitesse = 0;
     public static final double maxAcceleration = 0;
 }

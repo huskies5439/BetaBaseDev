@@ -5,14 +5,33 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
+
+import java.util.List;
+
+import com.fasterxml.jackson.databind.JsonSerializable.Base;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.CaracteriserDrive;
 import frc.robot.commands.TrajetAuto;
 import frc.robot.subsystems.BasePilotable;
+import jdk.vm.ci.meta.Constant;
+import frc.robot.Constants;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -57,8 +76,48 @@ basePilotable.setDefaultCommand(new RunCommand(() -> basePilotable.conduire(joys
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    var autoVoltageConstraint =
+    new DifferentialDriveVoltageConstraint(
+      new SimpleMotorFeedforward(
+        Constants.kSRamsete,
+        Constants.kVRamsete, 
+        0), 
+        Constants.kinematics,
+        10);
 
+    TrajectoryConfig config =
+      new TrajectoryConfig(
+        Constants.maxVitesse, 
+        Constants.maxAcceleration).setKinematics(Constants.kinematics).addConstraint(autoVoltageConstraint); 
     // An ExampleCommand will run in autonomous
     return new TrajetAuto("Test", basePilotable);
+
+    Trajectory exampleTrajectory =
+        TrajectoryGenerator.generateTrajectory(
+            new Pose2d(0, 0, new Rotation2d(0)),
+            List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+            new Pose2d(3, 0, new Rotation2d(0)),
+            config);
+
+    RamseteCommand ramseteCommand =
+      new RamseteCommand(
+        exampleTrajectory, 
+        RamseteCommand::getPose, 
+        new RamseteController(Constants.kBRamsete, Constants.kZRamsete), 
+        new SimpleMotorFeedforward(
+          Constants.kSRamsete,
+          Constants.kVRamsete, 
+          0), 
+          Constants.kinematics, 
+          BasePilotable::getWheelSpeeds, 
+          new PIDController(Constants.kPRamsete, 0, 0), 
+          new PIDController(Constants.kPRamsete, 0, 0), 
+          BasePilotable::autoConduire, 
+          );
+
+          BasePilotable.resetOdometry(exampleTrajectory.getInitialPose());
+
+          return ramseteCommand.andThen(() -> BasePilotable.autoConduire(0, 0));
+
   }
 }
