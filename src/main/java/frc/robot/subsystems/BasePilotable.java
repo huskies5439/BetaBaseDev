@@ -135,7 +135,7 @@ public void setBrake(boolean isBrake) {
 public double getAngle() {
   // Angle du robot par le gyro
 
-  return gyro.getAngle();
+  return -gyro.getAngle();
 }
 
 public void resetGyro() {
@@ -145,7 +145,7 @@ public void resetGyro() {
 }
 
 public double getAngleSpeed() {
-  return gyro.getRate();
+  return -gyro.getRate();
 } 
 
 public double getPositionG() {
