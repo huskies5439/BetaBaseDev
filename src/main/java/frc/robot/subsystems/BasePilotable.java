@@ -202,7 +202,7 @@ public double[] getOdometry(){
   return position;
 }
 
-private Pose2d getPose() {
+public Pose2d getPose() {
   return odometry.getPoseMeters();
 }
 

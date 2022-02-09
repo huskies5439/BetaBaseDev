@@ -1,6 +1,6 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+// the WPILib BSD license file in the root directory of basePilotable project.
 
 package frc.robot;
 
@@ -20,8 +20,6 @@ import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConst
 
 import java.util.List;
 
-import com.fasterxml.jackson.databind.JsonSerializable.Base;
-
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -29,12 +27,11 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.CaracteriserDrive;
 import frc.robot.commands.TrajetAuto;
 import frc.robot.subsystems.BasePilotable;
-import jdk.vm.ci.meta.Constant;
 import frc.robot.Constants;
 
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
+ * basePilotable class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and button mappings) should be declared here.
@@ -63,7 +60,7 @@ basePilotable.setDefaultCommand(new RunCommand(() -> basePilotable.conduire(joys
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be created by
+   * Use basePilotable method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
@@ -71,7 +68,7 @@ basePilotable.setDefaultCommand(new RunCommand(() -> basePilotable.conduire(joys
   private void configureButtonBindings() {}
 
   /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
+   * Use basePilotable to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
@@ -86,38 +83,57 @@ basePilotable.setDefaultCommand(new RunCommand(() -> basePilotable.conduire(joys
         10);
 
     TrajectoryConfig config =
-      new TrajectoryConfig(
-        Constants.maxVitesse, 
-        Constants.maxAcceleration).setKinematics(Constants.kinematics).addConstraint(autoVoltageConstraint); 
-    // An ExampleCommand will run in autonomous
-    return new TrajetAuto("Test", basePilotable);
+        new TrajectoryConfig(
+                Constants.maxVitesse,
+                Constants.maxAcceleration)
+            // Add kinematics to ensure max speed is actually obeyed
+            .setKinematics(Constants.kinematics)
+            // Apply the voltage constraint
+            .addConstraint(autoVoltageConstraint);
 
     Trajectory exampleTrajectory =
         TrajectoryGenerator.generateTrajectory(
+            // Start at the origin facing the +X direction
             new Pose2d(0, 0, new Rotation2d(0)),
+            // Pass through these two interior waypoints, making an 's' curve path
             List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
+            // End 3 meters straight ahead of where we started, facing forward
             new Pose2d(3, 0, new Rotation2d(0)),
+            // Pass config
             config);
 
-    RamseteCommand ramseteCommand =
+/*    RamseteCommand ramseteCommand =
       new RamseteCommand(
         exampleTrajectory, 
-        RamseteCommand::getPose, 
-        new RamseteController(Constants.kBRamsete, Constants.kZRamsete), 
+        basePilotable::getPose, 
+        new RamseteController(2, 0.7), 
         new SimpleMotorFeedforward(
           Constants.kSRamsete,
-          Constants.kVRamsete, 
+          Constants.kVRamsete,
           0), 
-          Constants.kinematics, 
-          BasePilotable::getWheelSpeeds, 
+          Constants.kinematics,
+          basePilotable::getWheelSpeeds,
+          new PIDController(Constants.kPRamsete, 0, 0),
           new PIDController(Constants.kPRamsete, 0, 0), 
-          new PIDController(Constants.kPRamsete, 0, 0), 
-          BasePilotable::autoConduire, 
-          );
+          basePilotable::autoConduire, 
+          basePilotable);*/
 
-          BasePilotable.resetOdometry(exampleTrajectory.getInitialPose());
+          RamseteCommand ramseteCommand = new RamseteCommand(                         //On crée notre Ramsete Command
+          exampleTrajectory,                                                              //On passe notre trajectoire a la RamseteCommand afin qu'il sache quoi faire
+          basePilotable::getPose,                                                            //On passe notre pose, afin qu'il connaisse son emplacement
+          new RamseteController(2, 0.7),                                            //Ce sont des arguments réputés comme idéale pour des robots de FRC dans un Ramsete Controller
+          new SimpleMotorFeedforward(Constants.kSRamsete, Constants.kVRamsete, 0),  //On donnes nos arguments de FeedForward
+          Constants.kinematics,                                                     //Notre kinematics (Afin que le robot conaisse ses mesures)
+          basePilotable::getWheelSpeeds,                                                  //Donne nos vitesses de roues
+          new PIDController(Constants.kPRamsete, 0, 0),                             //On donne un PID Controller a chacune des roues (SpeedController Group)
+          new PIDController(Constants.kPRamsete, 0, 0),                             //"                                                                     "
+          basePilotable::autoConduire,                                                       //On lui donne une commande pour conduire
+          basePilotable);                                                                    //Tous les "basePilotable" sont la pour spécifier qu'on parle de la BasePilotable
+          return ramseteCommand.andThen(()->basePilotable.stop());   
 
-          return ramseteCommand.andThen(() -> BasePilotable.autoConduire(0, 0));
+          basePilotable.resetOdometry(exampleTrajectory.getInitialPose());
 
+          return ramseteCommand.andThen(() -> basePilotable.autoConduire(0, 0));                             //On demande au robot de s'arrêter à la fin de la trajectoire
+    }
   }
 }
