@@ -5,29 +5,14 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.RamseteController;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
-
-import java.util.List;
-
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import frc.robot.commands.CaracteriserDrive;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.TrajetAuto;
 import frc.robot.subsystems.BasePilotable;
-import frc.robot.Constants;
 
 
 /**
@@ -44,14 +29,21 @@ public class RobotContainer {
 
  private final SendableChooser <Command> chooser = new SendableChooser<>();
  
+  private final Command testDroit = new TrajetAuto("testDroit", basePilotable);
+  private final Command testGauche = new TrajetAuto("testGauche", basePilotable);
+  private final Command trajetVide = new WaitCommand(14);
+
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    chooser.addOption("test Gauche", testGauche);
+    chooser.addOption("test Droit", testDroit);
+    chooser.setDefaultOption("Trajet Vide", trajetVide);
 
-  
+
     SmartDashboard.putData(chooser);
 
 basePilotable.setDefaultCommand(new RunCommand(() -> basePilotable.conduire(joystick.getY(Hand.kLeft), joystick.getX(Hand.kRight)), basePilotable));
@@ -75,45 +67,11 @@ basePilotable.setDefaultCommand(new RunCommand(() -> basePilotable.conduire(joys
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    var autoVoltageConstraint =
-    new DifferentialDriveVoltageConstraint(
-      new SimpleMotorFeedforward(
-        Constants.kSRamsete,
-        Constants.kVRamsete, 
-        0), 
-        Constants.kinematics,
-        10);
+    
+//return new TrajetAuto("test", basePilotable);
 
-    TrajectoryConfig config =
-        new TrajectoryConfig(
-                Constants.maxVitesse,
-                Constants.maxAcceleration)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(Constants.kinematics)
-            // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
+return chooser.getSelected();
 
-    Trajectory exampleTrajectory =
-        TrajectoryGenerator.generateTrajectory(
-            new Pose2d(0, 0, new Rotation2d(0)),
-            List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-            new Pose2d(3, 0, new Rotation2d(0)),
-            config);
 
-          RamseteCommand ramseteCommand = new RamseteCommand(                               //On crée notre Ramsete Command
-            exampleTrajectory,                                                              //On passe notre trajectoire a la RamseteCommand afin qu'il sache quoi faire
-            basePilotable::getPose,                                                         //On passe notre pose, afin qu'il connaisse son emplacement
-            new RamseteController(2, 0.7),                                                  //Ce sont des arguments réputés comme idéale pour des robots de FRC dans un Ramsete Controller
-            new SimpleMotorFeedforward(Constants.kSRamsete, Constants.kVRamsete, 0),        //On donnes nos arguments de FeedForward
-            Constants.kinematics,                                                           //Notre kinematics (Afin que le robot conaisse ses mesures)
-            basePilotable::getWheelSpeeds,                                                  //Donne nos vitesses de roues
-            new PIDController(Constants.kPRamsete, 0, 0),                                   //On donne un PID Controller a chacune des roues (SpeedController Group)
-            new PIDController(Constants.kPRamsete, 0, 0),                                   //"                                                                     "
-            basePilotable::autoConduire,                                                    //On lui donne une commande pour conduire
-            basePilotable);                                                                    //Tous les "basePilotable" sont la pour spécifier qu'on parle de la BasePilotable  
-          
-            basePilotable.resetOdometry(exampleTrajectory.getInitialPose());
-  
-          return ramseteCommand.andThen(() -> basePilotable.autoConduire(0, 0));                             //On demande au robot de s'arrêter à la fin de la trajectoire
-    }
+}
   }
