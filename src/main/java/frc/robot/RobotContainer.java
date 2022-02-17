@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID.Hand;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.XboxController;
@@ -46,7 +46,7 @@ public class RobotContainer {
 
     SmartDashboard.putData(chooser);
 
-basePilotable.setDefaultCommand(new RunCommand(() -> basePilotable.conduire(joystick.getY(Hand.kLeft), joystick.getX(Hand.kRight)), basePilotable));
+basePilotable.setDefaultCommand(new RunCommand(() -> basePilotable.conduire(joystick.getLeftY(), joystick.getRightX()), basePilotable));
 
     
   }
