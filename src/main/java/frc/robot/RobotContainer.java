@@ -8,11 +8,18 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.Auto3Ballons;
+import frc.robot.commands.CaracteriserDrive;
+import frc.robot.commands.TournerAuto;
 import frc.robot.commands.TrajetAuto;
 import frc.robot.subsystems.BasePilotable;
+import frc.robot.subsystems.Pince;
 
 
 /**
@@ -23,14 +30,15 @@ import frc.robot.subsystems.BasePilotable;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
- BasePilotable basePilotable = new BasePilotable();
+  BasePilotable basePilotable = new BasePilotable();
+  Pince pnice = new Pince();
 
- XboxController joystick = new XboxController(0);
+  XboxController joystick = new XboxController(0);
 
- private final SendableChooser <Command> chooser = new SendableChooser<>();
+  private final SendableChooser <Command> chooser = new SendableChooser<>();
  
-  private final Command testDroit = new TrajetAuto("testDroit", basePilotable);
-  private final Command testGauche = new TrajetAuto("testGauche", basePilotable);
+  private final Command retourne = new TrajetAuto("retourne", basePilotable);
+  private final Command Auto2Ballons = new Auto3Ballons(basePilotable, pnice);
   private final Command trajetVide = new WaitCommand(14);
 
 
@@ -39,9 +47,10 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    chooser.addOption("test Gauche", testGauche);
-    chooser.addOption("test Droit", testDroit);
+   chooser.addOption("retourne", retourne);
+  
     chooser.setDefaultOption("Trajet Vide", trajetVide);
+    chooser.addOption("2Ballons", Auto2Ballons);
 
 
     SmartDashboard.putData(chooser);
@@ -58,6 +67,8 @@ basePilotable.setDefaultCommand(new RunCommand(() -> basePilotable.conduire(joys
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    new JoystickButton(joystick, Button.kA.value).whenPressed(new InstantCommand(pnice::ouvrirPince));
+    new JoystickButton(joystick, Button.kB.value).whenPressed(new InstantCommand(pnice::fermerPince));
 
   }
 
@@ -68,9 +79,9 @@ basePilotable.setDefaultCommand(new RunCommand(() -> basePilotable.conduire(joys
    */
   public Command getAutonomousCommand() {
     
-//return new TrajetAuto("test", basePilotable);
+    //return new TournerAuto(-180, basePilotable).andThen(new WaitCommand(1)).andThen(new TournerAuto(90, basePilotable)).andThen(new WaitCommand(1)).andThen(new TournerAuto(270, basePilotable));
 
-return chooser.getSelected();
+    return chooser.getSelected();
 
 
 }

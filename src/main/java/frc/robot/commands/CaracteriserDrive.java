@@ -16,7 +16,7 @@ public class CaracteriserDrive extends CommandBase {
 
   @Override
   public void execute() {
-    basePilotable.autoConduire(basePilotable.getVitesseShuffleBoard(),basePilotable.getVitesseShuffleBoard());
+    basePilotable.autoConduire(basePilotable.getVitesseShuffleBoard(),-basePilotable.getVitesseShuffleBoard());//2 vitesses ++ == drive linéaire / 2 vitesses +- == drive rotation
   }
 
   @Override
