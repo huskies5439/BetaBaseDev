@@ -14,7 +14,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.Auto1Ballon;
+import frc.robot.commands.Auto2Ballons;
 import frc.robot.commands.Auto3Ballons;
+import frc.robot.commands.Auto3V2Ballons;
+import frc.robot.commands.AutoTest;
 import frc.robot.commands.CaracteriserDrive;
 import frc.robot.commands.TournerAuto;
 import frc.robot.commands.TrajetAuto;
@@ -36,9 +40,10 @@ public class RobotContainer {
   XboxController joystick = new XboxController(0);
 
   private final SendableChooser <Command> chooser = new SendableChooser<>();
- 
-  private final Command retourne = new TrajetAuto("retourne", basePilotable);
-  private final Command Auto2Ballons = new Auto3Ballons(basePilotable, pnice);
+  private final Command Auto1Ballon = new Auto1Ballon(basePilotable, pnice);
+  private final Command Auto2Ballons = new Auto2Ballons(basePilotable, pnice);
+  private final Command Auto3Ballons = new Auto3Ballons(basePilotable, pnice);
+  private final Command Auto3BallonsV2 = new Auto3V2Ballons(basePilotable, pnice);
   private final Command trajetVide = new WaitCommand(14);
 
 
@@ -47,10 +52,13 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-   chooser.addOption("retourne", retourne);
-  
+
     chooser.setDefaultOption("Trajet Vide", trajetVide);
-    chooser.addOption("2Ballons", Auto2Ballons);
+    chooser.addOption("Trajet 1 Ballon", Auto1Ballon);
+    chooser.addOption("Tajet 2 Ballons", Auto2Ballons);
+    chooser.addOption("Trajet 3 Ballons", Auto3Ballons);
+    chooser.addOption("Trajet 3 Ballons V2", Auto3BallonsV2);
+
 
 
     SmartDashboard.putData(chooser);
@@ -78,8 +86,6 @@ basePilotable.setDefaultCommand(new RunCommand(() -> basePilotable.conduire(joys
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    
-    //return new TournerAuto(-180, basePilotable).andThen(new WaitCommand(1)).andThen(new TournerAuto(90, basePilotable)).andThen(new WaitCommand(1)).andThen(new TournerAuto(270, basePilotable));
 
     return chooser.getSelected();
 

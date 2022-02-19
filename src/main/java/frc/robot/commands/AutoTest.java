@@ -13,21 +13,19 @@ import frc.robot.subsystems.Pince;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Auto2Ballons extends SequentialCommandGroup {
-  /** Creates a new Auto2Ballons. */
-
-  public Auto2Ballons(BasePilotable basePilotable, Pince pince) {
+public class AutoTest extends SequentialCommandGroup {
+  /** Creates a new Test. */
+  public AutoTest(BasePilotable basePilotable, Pince pince) {
+    Trajectory senretour = basePilotable.creerTrajectoire("test-senretour");
+    Trajectory versballon = basePilotable.creerTrajectoire("test-versballon");
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    Trajectory one = basePilotable.creerTrajectoire("2b-1");
-    Trajectory two = basePilotable.creerTrajectoire("2b-2");
     addCommands(
-      new InstantCommand(() -> basePilotable.resetOdometry(one.getInitialPose())),
+      new InstantCommand(() -> basePilotable.resetOdometry(senretour.getInitialPose())),
       new InstantCommand(() -> basePilotable.setRamp(0)),
       new InstantCommand(() -> basePilotable.setBrake(true)),
-      basePilotable.ramseteSimple(one),
-      basePilotable.ramseteSimple(two),
-      new TournerAuto(180, basePilotable),
+      basePilotable.ramseteSimple(versballon),
+      basePilotable.ramseteSimple(senretour),
       new InstantCommand(() -> basePilotable.setBrake(false))
     );
   }

@@ -18,24 +18,23 @@ public class Auto3Ballons extends SequentialCommandGroup {
   
   /** Creates a new Auto2Ballons. */
   public Auto3Ballons(BasePilotable basePilotable, Pince pince) {
-    Trajectory debut =  basePilotable.creerTrajectoire("debut");
-    Trajectory ballon2 =  basePilotable.creerTrajectoire("ballon2");
-    Trajectory reverse = basePilotable.creerTrajectoire("reverse");
-    Trajectory retourne = basePilotable.creerTrajectoire("retourne");
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
+    Trajectory one = basePilotable.creerTrajectoire("3b-1");
+    Trajectory three = basePilotable.creerTrajectoire("3b-3");
+    Trajectory four = basePilotable.creerTrajectoire("3b-4");
     addCommands(
-      new InstantCommand(() -> basePilotable.resetOdometry(debut.getInitialPose())),
-      new InstantCommand(() -> basePilotable.setRamp(0)),
-      new InstantCommand(() -> basePilotable.setBrake(true)),
-      basePilotable.ramseteSimple(debut),
-      new InstantCommand(() -> pince.fermerPince()),
-      new WaitCommand(1.0),
-      new InstantCommand(() -> pince.ouvrirPince()),
-      basePilotable.ramseteSimple(ballon2),
-      basePilotable.ramseteSimple(reverse),
-      basePilotable.ramseteSimple(retourne),
-      new InstantCommand(() -> basePilotable.setBrake(false))
+    new InstantCommand(() -> basePilotable.resetOdometry(one.getInitialPose())),
+    new InstantCommand(() -> basePilotable.setRamp(0)),
+    new InstantCommand(() -> basePilotable.setBrake(true)),
+    //new TournerAuto(190, basePilotable),
+    basePilotable.ramseteSimple(one),
+    new WaitCommand(1),
+    basePilotable.ramseteSimple(three),
+    new WaitCommand(1),
+    basePilotable.ramseteSimple(four),
+    new InstantCommand(() -> basePilotable.setBrake(false))
+
+
+
     );
   }
 }
