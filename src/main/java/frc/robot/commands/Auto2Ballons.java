@@ -22,13 +22,15 @@ public class Auto2Ballons extends SequentialCommandGroup {
     Trajectory one = basePilotable.creerTrajectoire("2b-1");
     Trajectory two = basePilotable.creerTrajectoire("2b-2");
     addCommands(
+      //initialisation
       new InstantCommand(() -> basePilotable.resetOdometry(one.getInitialPose())),
       new InstantCommand(() -> basePilotable.setRamp(0)),
       new InstantCommand(() -> basePilotable.setBrake(true)),
+      //trajet
       basePilotable.ramseteSimple(one),
       basePilotable.ramseteSimple(two),
-      new TournerAuto(180, basePilotable),
-      new InstantCommand(() -> basePilotable.setBrake(false))
+      new TournerAuto(180, basePilotable)
+
     );
   }
 }

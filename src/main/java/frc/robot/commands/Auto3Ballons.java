@@ -30,11 +30,10 @@ public class Auto3Ballons extends SequentialCommandGroup {
     new WaitCommand(1),
     basePilotable.ramseteSimple(three),
     new WaitCommand(1),
-    basePilotable.ramseteSimple(four),
-    new InstantCommand(() -> basePilotable.setBrake(false))
-
-
+    basePilotable.ramseteSimple(four)
 
     );
   }
 }
+
+//supprimer cette commande et remplacer par V2

@@ -22,4 +22,5 @@ public final class Constants {
     public static final double kPRamsete = 2;
     public static final double maxVitesse = 1;
     public static final double maxAcceleration = 0.5;
+    public static final double rampTeleop = 0.2;
 }

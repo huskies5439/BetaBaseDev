@@ -18,14 +18,13 @@ public class Auto1Ballon extends SequentialCommandGroup {
   public Auto1Ballon(BasePilotable basePilotable, Pince pince) {
 
     Trajectory one = basePilotable.creerTrajectoire("1b-1");
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+      //initialisation
       new InstantCommand(() -> basePilotable.resetOdometry(one.getInitialPose())),
       new InstantCommand(() -> basePilotable.setRamp(0)),
       new InstantCommand(() -> basePilotable.setBrake(true)),
-      basePilotable.ramseteSimple(one),
-      new InstantCommand(() -> basePilotable.setBrake(false))
+      //trajet
+      basePilotable.ramseteSimple(one)
 
     );
   }

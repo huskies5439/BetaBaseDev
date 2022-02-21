@@ -30,3 +30,5 @@ public class AutoTest extends SequentialCommandGroup {
     );
   }
 }
+
+//supprimer cette commande pour programme final

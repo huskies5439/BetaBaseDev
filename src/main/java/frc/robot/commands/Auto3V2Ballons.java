@@ -19,13 +19,13 @@ public class Auto3V2Ballons extends SequentialCommandGroup {
     Trajectory one = basePilotable.creerTrajectoire("3V2b-1");
 
     addCommands(
+      //initialisation
       new InstantCommand(() -> basePilotable.resetOdometry(one.getInitialPose())),
       new InstantCommand(() -> basePilotable.setRamp(0)),
       new InstantCommand(() -> basePilotable.setBrake(true)),
-      basePilotable.ramseteSimple(one),
-      new InstantCommand(() -> basePilotable.setBrake(false))
-
-
+      //trajet
+      basePilotable.ramseteSimple(one)
+      
     );
   }
 }
