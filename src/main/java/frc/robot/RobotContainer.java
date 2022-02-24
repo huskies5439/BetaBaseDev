@@ -16,8 +16,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Auto1Ballon;
 import frc.robot.commands.Auto2Ballons;
 import frc.robot.commands.Auto3Ballons;
-import frc.robot.commands.Auto3V2Ballons;
-import frc.robot.commands.AutoTest;
 import frc.robot.commands.CaracteriserDrive;
 import frc.robot.commands.TournerAuto;
 import frc.robot.commands.TrajetAuto;
@@ -45,7 +43,6 @@ public class RobotContainer {
   private final Command Auto1Ballon = new Auto1Ballon(basePilotable, pnice);
   private final Command Auto2Ballons = new Auto2Ballons(basePilotable, pnice);
   private final Command Auto3Ballons = new Auto3Ballons(basePilotable, pnice);
-  private final Command Auto3BallonsV2 = new Auto3V2Ballons(basePilotable, pnice);
   private final Command trajetVide = new WaitCommand(14);
 
   /**
@@ -60,7 +57,6 @@ public class RobotContainer {
     chooser.addOption("Trajet 1 Ballon", Auto1Ballon);
     chooser.addOption("Tajet 2 Ballons", Auto2Ballons);
     chooser.addOption("Trajet 3 Ballons", Auto3Ballons);
-    chooser.addOption("Trajet 3 Ballons V2", Auto3BallonsV2);
 
     SmartDashboard.putData(chooser);
 

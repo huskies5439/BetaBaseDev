@@ -29,8 +29,6 @@ public class Auto2Ballons extends SequentialCommandGroup {
       //trajet
       basePilotable.ramseteSimple(one),
       basePilotable.ramseteSimple(two)
-      //basePilotable.ramseteSimple(two),
-      //new TournerAuto(180, basePilotable)
 
     );
   }
