@@ -19,8 +19,8 @@ public class Auto2Ballons extends SequentialCommandGroup {
   public Auto2Ballons(BasePilotable basePilotable, Pince pince) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    Trajectory one = basePilotable.creerTrajectoire("2b-1");
-    Trajectory two = basePilotable.creerTrajectoire("2b-2");
+    Trajectory one = basePilotable.creerTrajectoire("2bV2-1");
+    Trajectory two = basePilotable.creerTrajectoire("2bV2-2");
     addCommands(
       //initialisation
       new InstantCommand(() -> basePilotable.resetOdometry(one.getInitialPose())),
@@ -28,8 +28,9 @@ public class Auto2Ballons extends SequentialCommandGroup {
       new InstantCommand(() -> basePilotable.setBrake(true)),
       //trajet
       basePilotable.ramseteSimple(one),
-      basePilotable.ramseteSimple(two),
-      new TournerAuto(180, basePilotable)
+      basePilotable.ramseteSimple(two)
+      //basePilotable.ramseteSimple(two),
+      //new TournerAuto(180, basePilotable)
 
     );
   }
