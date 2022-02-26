@@ -18,8 +18,10 @@ import frc.robot.commands.Auto2Ballons;
 import frc.robot.commands.Auto3Ballons;
 import frc.robot.commands.CaracteriserDrive;
 import frc.robot.commands.TournerAuto;
+import frc.robot.commands.TournerLimelight;
 import frc.robot.commands.TrajetAuto;
 import frc.robot.subsystems.BasePilotable;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Pince;
 
 /**
@@ -34,16 +36,18 @@ import frc.robot.subsystems.Pince;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   BasePilotable basePilotable = new BasePilotable();
-  Pince pnice = new Pince();
+  Pince pince = new Pince();
+  Limelight limelight = new Limelight();
 
   XboxController joystick = new XboxController(0);
 
   private final SendableChooser<Command> chooser = new SendableChooser<>();
   //trajets
-  private final Command Auto1Ballon = new Auto1Ballon(basePilotable, pnice);
-  private final Command Auto2Ballons = new Auto2Ballons(basePilotable, pnice);
-  private final Command Auto3Ballons = new Auto3Ballons(basePilotable, pnice);
+  private final Command Auto1Ballon = new Auto1Ballon(basePilotable, pince);
+  private final Command Auto2Ballons = new Auto2Ballons(basePilotable, pince);
+  private final Command Auto3Ballons = new Auto3Ballons(basePilotable, pince);
   private final Command trajetVide = new WaitCommand(14);
+ 
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -57,6 +61,7 @@ public class RobotContainer {
     chooser.addOption("Trajet 1 Ballon", Auto1Ballon);
     chooser.addOption("Tajet 2 Ballons", Auto2Ballons);
     chooser.addOption("Trajet 3 Ballons", Auto3Ballons);
+  
 
     SmartDashboard.putData(chooser);
 
@@ -74,8 +79,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(joystick, Button.kA.value).whenPressed(new InstantCommand(pnice::ouvrirPince));
-    new JoystickButton(joystick, Button.kB.value).whenPressed(new InstantCommand(pnice::fermerPince));
+    new JoystickButton(joystick, Button.kA.value).whenPressed(new InstantCommand(pince::ouvrirPince));
+    new JoystickButton(joystick, Button.kB.value).whenPressed(new InstantCommand(pince::fermerPince));
+    new JoystickButton(joystick, Button.kX.value).toggleWhenPressed(new TournerLimelight(basePilotable, limelight));
 
   }
 
@@ -87,10 +93,11 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
 
-    return chooser.getSelected()
+    /*return chooser.getSelected()
     //prepare Teleop
     .andThen (new InstantCommand(() -> basePilotable.setBrake(false)))
-    .andThen (new InstantCommand(() -> basePilotable.setRamp(0)));
-
+    .andThen (new InstantCommand(() -> basePilotable.setRamp(0)));*/
+    return null;
+  
   }
 }

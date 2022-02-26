@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import java.io.IOException;
+import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
@@ -62,8 +63,8 @@ private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*U
     // On inverse les moteurs pour avancer quand la vittesse est à 1
     conversionEncodeur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*Units.inchesToMeters(4); 
     setRamp(0);
-    moteurDroit.setInverted(true);
     moteurGauche.setInverted(true);
+    moteurDroit.setInverted(false);
     setBrake(false);
 
     // Configure les capteurs internes des moteurs
@@ -100,13 +101,13 @@ private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*U
 public void conduire(double vx,double vz) {
   // Le vx en négatif car joystick en mode avion pis le vz capped a 70% de vitesse :D -Steven
 
-  drive.arcadeDrive(-0.7*vx, 0.5 * vz);
+  drive.arcadeDrive(-0.7*vx, 0.5*vz);
 }
 
 public void autoConduire(double voltGauche, double voltDroit) {
   // Fonction conduire utiliser en Autonomous 
   moteurGauche.setVoltage(voltGauche);
-  moteurDroit.setVoltage(-voltDroit);
+  moteurDroit.setVoltage(voltDroit);
   drive.feed();
 }
 
@@ -168,7 +169,7 @@ public double getPositionG() {
 public double getPositionD() {
   // Degrés fait par le moteur droit
 
-  return -moteurDroit.getSelectedSensorPosition()*conversionMoteur;
+  return moteurDroit.getSelectedSensorPosition()*conversionMoteur;
 }
 
 public double getPosition() {
@@ -179,7 +180,7 @@ public double getPosition() {
 
 public double getVitesseD() {
 
-  return -moteurDroit.getSelectedSensorVelocity()*conversionEncodeur*10;//x10 car les encodeurs des Falcon donne des clics par 100 ms.
+  return moteurDroit.getSelectedSensorVelocity()*conversionEncodeur*10;//x10 car les encodeurs des Falcon donne des clics par 100 ms.
 }
 
 public double getVitesseG() {
@@ -254,8 +255,8 @@ public void resetOdometry(Pose2d pose){
       return ramseteCommand.andThen(()->stop());                              //On demande au robot de s'arrêter à la fin de la trajectoire
   }
 
-  public double getVoltagePIDF(double angleCible){
-    return tournerPID.calculate(getAngle(), angleCible) + tournerFF.calculate(tournerPID.getSetpoint().velocity);
+  public double getVoltagePIDF(double angleCible, DoubleSupplier mesure){
+    return tournerPID.calculate(mesure.getAsDouble(), angleCible) + tournerFF.calculate(tournerPID.getSetpoint().velocity);
   }
 
   public boolean atAngleCible(){
