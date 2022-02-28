@@ -52,7 +52,7 @@ import edu.wpi.first.math.util.Units;
     private NetworkTableEntry voltageDrive = calibration.add("voltageDrive",0).getEntry();
 
     private SimpleMotorFeedforward tournerFF = new SimpleMotorFeedforward(0.496, 0.0287);
-    private ProfiledPIDController tournerPID = new ProfiledPIDController(0.35, 0, 0, new TrapezoidProfile.Constraints(90, 90));
+    private ProfiledPIDController tournerPID = new ProfiledPIDController(0.20, 0, 0, new TrapezoidProfile.Constraints(90, 90));
   
     private MedianFilter filter = new MedianFilter(5);
 

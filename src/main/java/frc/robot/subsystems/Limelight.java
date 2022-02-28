@@ -5,6 +5,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.util.Units;
 
 public class Limelight extends SubsystemBase {
   private NetworkTableInstance networkTableInstance = NetworkTableInstance.getDefault();
@@ -18,9 +19,9 @@ public class Limelight extends SubsystemBase {
 
 
   //Estimateur de distance, voir documentation Limelight ce sont les chiffres de IR
-  double hLimelight = 20.5; //pouce
-  double hCible = 89.5; //pouce
-  double angleLimelight=22.0;//degres
+  double hLimelight = Units.inchesToMeters(20.5);
+  double hCible = Units.inchesToMeters(89.5); // double angleLimelight=22.0;//degres
+  double angleLimelight = Units.inchesToMeters(22.0);
   /**
    * Creates a new Limelight.
    */
@@ -31,7 +32,7 @@ public class Limelight extends SubsystemBase {
     camDetection();
   }
   public double getDistance(){
-    return(hCible-hLimelight)/(Math.tan(Math.toRadians(angleLimelight+getTy())));//donne la distance en pouces
+    return(hCible-hLimelight)/Units.inchesToMeters(Math.tan(Math.toRadians(angleLimelight+getTy())));
   }
 
   public double getTa() {
