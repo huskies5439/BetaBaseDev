@@ -19,9 +19,9 @@ public class Limelight extends SubsystemBase {
 
 
   //Estimateur de distance, voir documentation Limelight ce sont les chiffres de IR
-  double hLimelight = Units.inchesToMeters(20.5);
-  double hCible = Units.inchesToMeters(89.5); // double angleLimelight=22.0;//degres
-  double angleLimelight = Units.inchesToMeters(22.0);
+  double hLimelight = 0.73;
+  double hCible = 2.4; // double angleLimelight=22.0;//degres
+  double angleLimelight = 46.0;
   /**
    * Creates a new Limelight.
    */
@@ -30,9 +30,10 @@ public class Limelight extends SubsystemBase {
     //camHumain();
     ledOn();
     camDetection();
+
   }
   public double getDistance(){
-    return(hCible-hLimelight)/Units.inchesToMeters(Math.tan(Math.toRadians(angleLimelight+getTy())));
+    return(hCible-hLimelight)/Math.tan(Math.toRadians(angleLimelight+getTy()));
   }
 
   public double getTa() {

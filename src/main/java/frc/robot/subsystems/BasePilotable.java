@@ -91,7 +91,6 @@ private final double conversionMoteur = (1.0/2048)*(14.0/72)*(16.0/44)*Math.PI*U
     SmartDashboard.putNumber("Vitesse Droite", getVitesseD());
     SmartDashboard.putNumber("Vitesse Gauche", getVitesseG());
     SmartDashboard.putNumberArray("Pose", getOdometry());
-
     // Insère ces informations dans le dashboard
 
     // This method will be called once per scheduler run
