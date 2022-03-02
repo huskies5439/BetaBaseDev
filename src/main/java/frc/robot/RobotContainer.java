@@ -66,8 +66,7 @@ public class RobotContainer {
     SmartDashboard.putData(chooser);
 
     basePilotable.setDefaultCommand(
-        new RunCommand(() -> basePilotable.conduire(joystick.getLeftY(), joystick.getRightX()), basePilotable));
-
+    new RunCommand(() -> basePilotable.conduire(joystick.getLeftY(), joystick.getRightX()), basePilotable));
   }
 
   /**
