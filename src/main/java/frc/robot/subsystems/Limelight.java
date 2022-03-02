@@ -16,14 +16,10 @@ public class Limelight extends SubsystemBase {
   private NetworkTableEntry ledMode = limelight.getEntry("ledMode");
   private NetworkTableEntry camMode = limelight.getEntry("camMode");
 
-
-  //Estimateur de distance, voir documentation Limelight ce sont les chiffres de IR
   double hLimelight = 0.73;
   double hCible = 2.4; // double angleLimelight=22.0;//degres
   double angleLimelight = 43.82;
-  /**
-   * Creates a new Limelight.
-   */
+
   public Limelight() {
     //ledOff();
     //camHumain();
@@ -66,15 +62,9 @@ public class Limelight extends SubsystemBase {
  
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
     SmartDashboard.putNumber("Ta", getTa());
     SmartDashboard.putNumber("tx", getTx());
     SmartDashboard.putNumber("ty", getTy());
     SmartDashboard.putNumber("distance limelight", getDistance());
-
-    
-      
-
   }
-
 }
