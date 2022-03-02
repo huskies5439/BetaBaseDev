@@ -20,7 +20,7 @@ public class Limelight extends SubsystemBase {
   //Estimateur de distance, voir documentation Limelight ce sont les chiffres de IR
   double hLimelight = 0.73;
   double hCible = 2.4; // double angleLimelight=22.0;//degres
-  double angleLimelight = 46.0;
+  double angleLimelight = 43.82;
   /**
    * Creates a new Limelight.
    */
