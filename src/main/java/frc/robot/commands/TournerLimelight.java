@@ -15,7 +15,9 @@ public class TournerLimelight extends CommandBase {
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+    limelight.ledOn();
+  }
 
   @Override
   public void execute() {
@@ -26,6 +28,7 @@ public class TournerLimelight extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     basePilotable.stop();
+    limelight.ledOff();
   }
 
   @Override

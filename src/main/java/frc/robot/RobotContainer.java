@@ -10,13 +10,13 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.Auto1Ballon;
-import frc.robot.commands.Auto2Ballons;
-import frc.robot.commands.Auto3Ballons;
 import frc.robot.commands.CaracteriserDrive;
 import frc.robot.commands.TournerAuto;
 import frc.robot.commands.TournerLimelight;
 import frc.robot.commands.TrajetAuto;
+import frc.robot.commands.AutoCommands.Auto1Ballon;
+import frc.robot.commands.AutoCommands.Auto2Ballons;
+import frc.robot.commands.AutoCommands.Auto3Ballons;
 import frc.robot.subsystems.BasePilotable;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Pince;
@@ -30,9 +30,9 @@ public class RobotContainer {
 
   private final SendableChooser<Command> chooser = new SendableChooser<>();
   //trajets
-  private final Command Auto1Ballon = new Auto1Ballon(basePilotable, pince);
-  private final Command Auto2Ballons = new Auto2Ballons(basePilotable, pince);
-  private final Command Auto3Ballons = new Auto3Ballons(basePilotable, pince);
+  private final Command Auto1Ballon = new Auto1Ballon(basePilotable, pince, limelight);
+  private final Command Auto2Ballons = new Auto2Ballons(basePilotable, pince, limelight);
+  private final Command Auto3Ballons = new Auto3Ballons(basePilotable, pince, limelight);
   private final Command trajetVide = new WaitCommand(14);
 
   public RobotContainer() {
