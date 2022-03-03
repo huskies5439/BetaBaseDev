@@ -72,15 +72,15 @@ import edu.wpi.first.math.util.Units;
   public void periodic() {
     //Insertion d'information dans le DashBoard
     odometry.update(Rotation2d.fromDegrees(getAngle()), getPositionG(), getPositionD());
-    SmartDashboard.putNumber("Position Droite", getPositionD());
-    SmartDashboard.putNumber("Position Gauche", getPositionG());
+    //SmartDashboard.putNumber("Position Droite", getPositionD());
+    //SmartDashboard.putNumber("Position Gauche", getPositionG());
     SmartDashboard.putNumber("Position Moyenne", getPosition());
     SmartDashboard.putNumber("Angle", getAngle());
-    SmartDashboard.putNumber("Angle Speed", getAngleSpeed());
-    SmartDashboard.putNumber("Vitesse", getVitesse());
-    SmartDashboard.putNumber("Vitesse Droite", getVitesseD());
-    SmartDashboard.putNumber("Vitesse Gauche", getVitesseG());
-    SmartDashboard.putNumberArray("Pose", getOdometry());
+    //SmartDashboard.putNumber("Angle Speed", getAngleSpeed());
+    SmartDashboard.putNumber("Vitesse Moyenne", getVitesse());
+    //SmartDashboard.putNumber("Vitesse Droite", getVitesseD());
+    //SmartDashboard.putNumber("Vitesse Gauche", getVitesseG());
+    //SmartDashboard.putNumberArray("Pose", getOdometry());
   }
 
 public void conduire(double vx,double vz) {

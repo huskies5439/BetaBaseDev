@@ -15,6 +15,7 @@ public class Limelight extends SubsystemBase {
   private NetworkTableEntry ty = limelight.getEntry("ty");
   private NetworkTableEntry ledMode = limelight.getEntry("ledMode");
   private NetworkTableEntry camMode = limelight.getEntry("camMode");
+  private NetworkTableEntry stream = limelight.getEntry("stream");
 
   double hLimelight = 0.73;
   double hCible = 2.4; // double angleLimelight=22.0;//degres
@@ -24,6 +25,7 @@ public class Limelight extends SubsystemBase {
     ledOff();
     //camHumain();
     camDetection();
+    stream.setNumber(2);
   }
 
   public double getDistance(){
@@ -64,7 +66,6 @@ public class Limelight extends SubsystemBase {
  
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Ta", getTa());
     SmartDashboard.putNumber("tx", getTx());
     SmartDashboard.putNumber("ty", getTy());
     SmartDashboard.putNumber("distance limelight", getDistance());

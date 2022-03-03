@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -36,7 +37,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     configureButtonBindings();
-
+    CameraServer.startAutomaticCapture();
     chooser.setDefaultOption("Trajet Vide", trajetVide);
     chooser.addOption("Trajet 1 Ballon", Auto1Ballon);
     chooser.addOption("Tajet 2 Ballons", Auto2Ballons);
