@@ -14,7 +14,7 @@ public class Auto1Ballon extends SequentialCommandGroup {
 
     Trajectory one = basePilotable.creerTrajectoire("1b-1");
     addCommands(
-      //initialisation
+      //initialisations
       new InstantCommand(() -> basePilotable.resetOdometry(one.getInitialPose())),
       new TournerLimelight(basePilotable, limelight),
       new InstantCommand(() -> basePilotable.setRamp(0)),
