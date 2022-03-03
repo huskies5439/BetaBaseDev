@@ -18,15 +18,14 @@ public class Limelight extends SubsystemBase {
 
   double hLimelight = 0.73;
   double hCible = 2.4; // double angleLimelight=22.0;//degres
-  double angleLimelight = 43.82;
+  double angleLimelight = 22.77756315;
 
   public Limelight() {
-    //ledOff();
+    ledOff();
     //camHumain();
-    ledOn();
     camDetection();
-
   }
+
   public double getDistance(){
     return(hCible-hLimelight)/Math.tan(Math.toRadians(angleLimelight+getTy()));
   }
@@ -50,12 +49,15 @@ public class Limelight extends SubsystemBase {
   public void ledOn() {
     ledMode.setNumber(3);
   }
+
   public void ledOff() {
     ledMode.setNumber(1);
   }
+
   public void camHumain(){
     camMode.setNumber(1);
   }
+
   public void camDetection(){
     camMode.setNumber(0);
   }
