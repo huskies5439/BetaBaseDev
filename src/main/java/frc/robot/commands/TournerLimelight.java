@@ -22,7 +22,7 @@ public class TournerLimelight extends CommandBase {
   @Override
   public void execute() {
     voltage = basePilotable.getVoltagePIDF(0, limelight::getTx);
-    basePilotable.autoConduire(-voltage, voltage);
+    basePilotable.autoConduire(-voltage, voltage); 
   }
 
   @Override
@@ -33,6 +33,6 @@ public class TournerLimelight extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return basePilotable.atAngleCible();
   }
 }

@@ -55,10 +55,10 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    /*return chooser.getSelected()
+    return chooser.getSelected()
     //prepare Teleop
     .andThen (new InstantCommand(() -> basePilotable.setBrake(false)))
-    .andThen (new InstantCommand(() -> basePilotable.setRamp(0)));*/
-    return null;
+    .andThen (new InstantCommand(() -> basePilotable.setRamp(0)));
+    //return null;
   }
 }
