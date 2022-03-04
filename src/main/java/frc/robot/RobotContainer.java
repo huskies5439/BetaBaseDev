@@ -10,16 +10,14 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.CaracteriserDrive;
-import frc.robot.commands.TournerAuto;
 import frc.robot.commands.TournerLimelight;
-import frc.robot.commands.TrajetAuto;
-import frc.robot.commands.AutoCommands.Auto1Ballon;
-import frc.robot.commands.AutoCommands.Auto2Ballons;
-import frc.robot.commands.AutoCommands.Auto3Ballons;
 import frc.robot.subsystems.BasePilotable;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Pince;
+import frc.robot.commands.auto.Auto1Ballon;
+import frc.robot.commands.auto.Auto2Ballons;
+import frc.robot.commands.auto.Auto3Ballons;
+
 
 public class RobotContainer {
   BasePilotable basePilotable = new BasePilotable();
