@@ -12,17 +12,18 @@ public class Auto2Ballons extends SequentialCommandGroup {
 
   public Auto2Ballons(BasePilotable basePilotable, Pince pince, Limelight limelight) {
     
-    Trajectory one = basePilotable.creerTrajectoire("2bV2-1");
-    Trajectory two = basePilotable.creerTrajectoire("2bV2-2");
+    Trajectory trajet = basePilotable.creerTrajectoire("2ballons");
+   
     addCommands(
       //initialisation
-      new InstantCommand(() -> basePilotable.resetOdometry(one.getInitialPose())),
+      new InstantCommand(() -> basePilotable.resetOdometry(trajet.getInitialPose())),
       new InstantCommand(() -> basePilotable.setRamp(0)),
       new InstantCommand(() -> basePilotable.setBrake(true)),
       //trajet
-      basePilotable.ramseteSimple(one),
-      basePilotable.ramseteSimple(two),
-      new TournerLimelight(basePilotable, limelight),
+      basePilotable.ramseteSimple(trajet),//en parallèle, on gobe
+
+      //Lancer
+      //new TournerLimelight(basePilotable, limelight),
       new WaitCommand(1),
       new InstantCommand(() -> pince.fermerPince()),
       new WaitCommand(1),

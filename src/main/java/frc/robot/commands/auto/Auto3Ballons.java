@@ -11,15 +11,23 @@ import frc.robot.subsystems.Pince;
 public class Auto3Ballons extends SequentialCommandGroup {
 
     public Auto3Ballons(BasePilotable basePilotable, Pince pince, Limelight limelight) {
-    Trajectory one = basePilotable.creerTrajectoire("3b-1");
+    Trajectory trajet = basePilotable.creerTrajectoire("3ballons");
     addCommands(
+      //Lancer
+       //new TournerLimelight(basePilotable, limelight),
+       new WaitCommand(1),
+       new InstantCommand(() -> pince.fermerPince()),
+       new WaitCommand(1),
+       new InstantCommand(() -> pince.ouvrirPince()),
     //initialisation
-    new InstantCommand(() -> basePilotable.resetOdometry(one.getInitialPose())),
+    new InstantCommand(() -> basePilotable.resetOdometry(trajet.getInitialPose())),
     new InstantCommand(() -> basePilotable.setRamp(0)),
     new InstantCommand(() -> basePilotable.setBrake(true)),
     //trajet
-    basePilotable.ramseteSimple(one),
-    new TournerLimelight(basePilotable, limelight),
+    basePilotable.ramseteSimple(trajet),//parallèle avec gobeur
+
+    //Lancer
+    //new TournerLimelight(basePilotable, limelight),
     new WaitCommand(1),
     new InstantCommand(() -> pince.fermerPince()),
     new WaitCommand(1),
