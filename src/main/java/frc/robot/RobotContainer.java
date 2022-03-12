@@ -22,6 +22,7 @@ import frc.robot.commands.auto.Auto3Ballons;
 public class RobotContainer {
   BasePilotable basePilotable = new BasePilotable();
   Pince pince = new Pince();
+  Pince bras = new Pince();
   Limelight limelight = new Limelight();
 
   XboxController joystick = new XboxController(0);
@@ -52,6 +53,8 @@ public class RobotContainer {
     new JoystickButton(joystick, Button.kA.value).whenPressed(new InstantCommand(pince::ouvrirPince));
     new JoystickButton(joystick, Button.kB.value).whenPressed(new InstantCommand(pince::fermerPince));
     new JoystickButton(joystick, Button.kX.value).toggleWhenPressed(new TournerLimelight(basePilotable, limelight));
+    new JoystickButton(joystick, Button.kLeftBumper.value).whenPressed(new InstantCommand(bras::brasOut));
+    new JoystickButton(joystick, Button.kRightBumper.value).whenPressed(new InstantCommand(bras::brasIn));
   }
 
   public Command getAutonomousCommand() {
