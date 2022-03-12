@@ -32,6 +32,6 @@ public class Pince extends SubsystemBase {
   }
 
   public void brasOut() {
-    bras.set(-1);
+    bras.set(0);
   }
 }

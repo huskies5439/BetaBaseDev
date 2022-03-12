@@ -12,8 +12,7 @@ public class Auto1Ballon extends SequentialCommandGroup {
   
   public Auto1Ballon(BasePilotable basePilotable, Pince pince, Limelight limelight) {
 
-    Trajectory one = basePilotable.creerTrajectoire("1b-1");
-    Trajectory two = basePilotable.creerTrajectoire("1b-2");
+    Trajectory one = basePilotable.creerTrajectoire("1ballon");
     addCommands(
       //initialisations
       new InstantCommand(() -> basePilotable.resetOdometry(one.getInitialPose())),
@@ -21,7 +20,6 @@ public class Auto1Ballon extends SequentialCommandGroup {
       new InstantCommand(() -> basePilotable.setBrake(true)),
       //trajet
       basePilotable.ramseteSimple(one),
-      basePilotable.ramseteSimple(two),
 
       new TournerLimelight(basePilotable, limelight),
       new WaitCommand(1),
