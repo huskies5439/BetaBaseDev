@@ -8,7 +8,5 @@ public final class Constants {
     public static final double kSRamsete = 0.6;
     public static final double kVRamsete = 4.48;
     public static final double kPRamsete = 2;
-    public static final double maxVitesse = 1;
-    public static final double maxAcceleration = 0.5;
     public static final double rampTeleop = 0.2;
 }
